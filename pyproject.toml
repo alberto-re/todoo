@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "todoo"
+version = "0.1.0"
+description = "Another To Do app"
+authors = ["Alberto Re <alberto.re@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.18.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+todoo = "todoo.app:main"
