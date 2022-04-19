@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import time
 from dataclasses import asdict, dataclass
-from typing import Dict, List
+from typing import Dict, Iterator, List
 
 DB_IDX_SEQ_INIT_VAL = -1
 DB_DEFAULT_PATH = ".todoodb.json"
@@ -43,6 +44,34 @@ class Todoo:
         self._seq += 1
         self._todos[self._seq] = Todo(idx=self._seq, title=title)
 
+    def edit(self, idx: int, title: str) -> None:
+        self._todos[idx].title = title
+
+    def delete(self, idx: int) -> None:
+        del self._todos[idx]
+
+    def toggle(self, idx: int) -> None:
+        self._todos[idx].done = not self._todos[idx].done
+
+    def ls(self) -> Iterator[Todo]:
+        for todo in self._todos.values():
+            yield todo
+
+    def search(self, keyword: str) -> Iterator[Todo]:
+        return (todo for todo in self._todos.values() if keyword in todo.title)
+
+
+def print_help():
+    print(f"Usage: ./{sys.argv[0]} <action> [args]")
+    print("Valid actions are:")
+    print("  h\t\t: display this help")
+    print("  a <title>\t: adds a new todo")
+    print("  e <title>\t: edits the title of a todo")
+    print("  t <id>\t: toggles the status of a todo")
+    print("  d <id>\t: deletes a todo")
+    print("  ls\t\t: displays all todos")
+    print("  s <keyword>\t: displays all todos with 'keyword' in title")
+
 
 def main():
 
@@ -52,7 +81,23 @@ def main():
     except FileNotFoundError:
         todoo = Todoo()
 
-    todoo.add("buy milk")
+    action = sys.argv[1]
+    if action == "a":
+        todoo.add(sys.argv[2])
+    elif action == "e":
+        todoo.edit(int(sys.argv[2]), sys.argv[3])
+    elif action == "d":
+        todoo.delete(int(sys.argv[2]))
+    elif action == "t":
+        todoo.toggle(int(sys.argv[2]))
+    elif action == "s":
+        for todo in todoo.search(sys.argv[2]):
+            print(todo)
+    elif action == "ls":
+        for todo in todoo.ls():
+            print(todo)
+    else:
+        print_help()
 
     with open(DB_DEFAULT_PATH, "w") as w:
         w.write(todoo.to_json())
