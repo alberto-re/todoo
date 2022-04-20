@@ -49,7 +49,12 @@ class Todoo:
         self._todos[self._seq] = Todo(idx=self._seq, title=title)
 
     def edit(self, idx: int, title: str) -> None:
-        self._todos[idx].title = title
+        self._todos[idx] = Todo(
+            idx=idx,
+            title=title,
+            done=self._todos[idx].done,
+            timestamp=self._todos[idx].timestamp,
+        )
 
     def delete(self, idx: int) -> None:
         del self._todos[idx]
@@ -76,7 +81,7 @@ def print_help():
     print("Valid actions are:")
     print("  h\t\t: display this help")
     print("  a <title>\t: adds a new todo")
-    print("  e <title>\t: edits the title of a todo")
+    print("  e <id> <title>\t: edits the title of a todo")
     print("  t <id>\t: toggles the status of a todo")
     print("  d <id>\t: deletes a todo")
     print("  ls\t\t: displays all todos")

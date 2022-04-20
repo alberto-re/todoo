@@ -11,11 +11,6 @@ def app():
     return app
 
 
-def test_todo_dataclass_invalid_values():
-    with pytest.raises(ValueError):
-        Todo(idx=1, title="play")
-
-
 def test_new_app_from_scratch():
     app = Todoo()
     assert not list(app.list())
@@ -41,6 +36,11 @@ def test_add_todo(app):
     assert list(app.list()) == expected_list
 
 
+def test_add_todo_invalid(app):
+    with pytest.raises(ValueError):
+        app.add("play")
+
+
 def test_edit_todo(app):
     app.edit(0, "buy almond milk")
     expected_list = [
@@ -48,6 +48,11 @@ def test_edit_todo(app):
         Todo(idx=0, title="buy almond milk"),
     ]
     assert list(app.list()) == expected_list
+
+
+def test_edit_todo_invalid(app):
+    with pytest.raises(ValueError):
+        app.edit(1, "sing")
 
 
 def test_delete_todo(app):
