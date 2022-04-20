@@ -53,9 +53,15 @@ class Todoo:
     def toggle(self, idx: int) -> None:
         self._todos[idx].done = not self._todos[idx].done
 
-    def ls(self) -> Iterator[Todo]:
-        for todo in self._todos.values():
-            yield todo
+    def list(self) -> Iterator[Todo]:
+        return (
+            todo
+            for idx, todo in sorted(
+                self._todos.items(),
+                key=lambda item: (item[1].timestamp, item[1].idx),
+                reverse=True,
+            )
+        )
 
     def search(self, keyword: str) -> Iterator[Todo]:
         return (todo for todo in self._todos.values() if keyword in todo.title)
@@ -94,7 +100,7 @@ def main():
         for todo in todoo.search(sys.argv[2]):
             print(todo)
     elif action == "ls":
-        for todo in todoo.ls():
+        for todo in todoo.list():
             print(todo)
     else:
         print_help()
