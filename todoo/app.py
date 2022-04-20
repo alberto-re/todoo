@@ -21,6 +21,10 @@ class Todo:
     done: bool = False
     timestamp: int = int(time.time())
 
+    def __post_init__(self) -> None:
+        if len(self.title) < 5:
+            raise ValueError("Title should be at least 5 characters long")
+
 
 class Todoo:
 

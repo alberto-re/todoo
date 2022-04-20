@@ -11,6 +11,11 @@ def app():
     return app
 
 
+def test_todo_dataclass_invalid_values():
+    with pytest.raises(ValueError):
+        Todo(idx=1, title="play")
+
+
 def test_new_app_from_scratch():
     app = Todoo()
     assert not list(app.list())
