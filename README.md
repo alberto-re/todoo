@@ -4,6 +4,7 @@ Another To Do app
 
 ## Requirements
 
+- Python 3.10
 - [Poetry](https://python-poetry.org/) (tested with v1.1.3, current stable version)
 
 ## Installation
