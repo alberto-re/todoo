@@ -16,6 +16,19 @@ def test_new_app_from_scratch():
     assert not list(app.list())
 
 
+def test_new_app_import_data():
+    data = [
+        {"idx": 3, "title": "backup", "done": False, "timestamp": 1650491200},
+        {"idx": 6, "title": "restore", "done": True, "timestamp": 1650491500},
+    ]
+    app = Todoo(data)
+    expected = [
+        Todo(idx=6, title="restore", done=True, timestamp=1650491500),
+        Todo(idx=3, title="backup", done=False, timestamp=1650491200),
+    ]
+    assert list(app.list()) == expected
+
+
 def test_list_todos(app):
     expected_list = [Todo(idx=1, title="walk the dog"), Todo(idx=0, title="buy milk")]
     assert list(app.list()) == expected_list
